@@ -65,7 +65,7 @@ $ npm run test:cov
 
 ```bash
 #create user
-curl -d '{"email":"test@test.com", "name":"test"}' -H 'Content-Type: application/json' localhost:3000/user/signup
+curl -d '{"email":"test@test.com", "name":"test", "password":"Test@123"}' -H 'Content-Type: application/json' localhost:3000/user/signup
 
 #update user
 
