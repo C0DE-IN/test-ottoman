@@ -20,10 +20,18 @@ addValidators({
     }
   })
 
+  const passwordValidator = (value: string) => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,60}$/
+    if (value && !value.match(regex)) {
+      throw new BadRequestException('password doesn\'t satisfies requirement!');
+    }
+    return true;
+  }
+
 const UserSchema = new Schema ({
     name: {type: String, required: true},
     email: {type: String, required: true, validator: 'email' },
-    password:{type: String, required: true, validator: 'password'},
+    password:{type: String, required: true},
     verified: {type:Boolean}
   }, {
     preHooks: {
@@ -37,6 +45,10 @@ const UserSchema = new Schema ({
         }
         const temp = await hash(doc.password, 12);
         doc.password = temp;
+        if (passwordValidator(doc.password)) {
+          const temp = await hash(doc.password, 12);
+          doc.password = temp;
+        }
       }
     },
     strict: true,
